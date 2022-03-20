@@ -1,0 +1,17 @@
+{
+  "name": "portable-http",
+  "version": "1.0.0",
+  "description": "A single-executable HTTP server",
+  "main": "main.js",
+  "scripts": {
+    "build": "pkg -t latest-win-x64 -o PortableHTTP main.js"
+  },
+  "author": "CyberGen49",
+  "license": "ISC",
+  "dependencies": {
+    "cli-color": "^2.0.1",
+    "mime": "^3.0.0",
+    "minimist": "^1.2.5",
+    "node-bash-title": "^0.0.2"
+  }
+}
