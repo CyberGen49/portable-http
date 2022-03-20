@@ -20,7 +20,6 @@ function execDir() {
 if (args.help) {
     console.log(clc.white(`PortableHTTP Help:`));
     console.log(clc.cyan(`--help`), `Display this message`);
-    console.log(clc.cyan(`--start`), `Start the HTTP server`);
     console.log(clc.cyan(`--port`), clc.cyanBright(`<port>`), `Listen on this port (defaults to 8080)`);
     console.log(clc.cyan(`--dir`), clc.cyanBright(`<directory>`), `Use this directory as the server's document root (defaults to the executable's directory)`);
     process.exit();
