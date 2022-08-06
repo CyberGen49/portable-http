@@ -8,6 +8,8 @@ const path = require('path');
 const setTitle = require('node-bash-title');
 setTitle('PortableHTTP');
 
+process.chdir(__dirname);
+
 // Returns the executable directory depending on if we're running the
 // executable or source JS file
 function execDir() {
@@ -51,23 +53,24 @@ if (args.dir) {
 console.log(`Document root: ${clc.greenBright(rootDir)}`);
 
 // Create the webserver
-const web = http.createServer((request, response) => {
-    console.log(`${clc.green('HTTP:')} Client ${clc.cyanBright(request.socket.remoteAddress)} requested URL: ${clc.greenBright(request.url)}`);
+const web = http.createServer((req, res) => {
+    // Log the request
+    console.log(clc.cyanBright(req.socket.remoteAddress), clc.yellowBright(req.method), clc.greenBright(req.url));
     // Get relative and absolute paths
-    let cleanPath = request.url.split('?')[0].replace('..', '.');
-    let fullPath = path.join(rootDir, cleanPath);
+    const reqPath = path.normalize(req.url.split('?')[0]);
+    const reqPathFull = path.join(rootDir, reqPath);
     // Add index.html to the path if it exists and is a directory
-    if (fs.existsSync(fullPath)) {
-        if (fs.lstatSync(fullPath).isDirectory()) fullPath = path.join(fullPath, 'index.html');
+    if (fs.existsSync(reqPathFull)) {
+        if (fs.lstatSync(reqPathFull).isDirectory()) reqPathFull = path.join(reqPathFull, 'index.html');
     }
     // If the path still exists, send the file
-    if (fs.existsSync(fullPath)) {
-        response.setHeader('Content-Type', mime.getType(fullPath));
-        response.end(fs.readFileSync(fullPath));
+    if (fs.existsSync(reqPathFull)) {
+        res.setHeader('Content-Type', mime.getType(reqPathFull));
+        res.end(fs.readFileSync(reqPathFull));
     // Otherwise, respond with 404
     } else {
-        response.statusCode = 404;
-        response.end();
+        res.statusCode = 404;
+        res.end();
     }
 });
 
