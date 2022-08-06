@@ -8,8 +8,6 @@ const path = require('path');
 const setTitle = require('node-bash-title');
 setTitle('PortableHTTP');
 
-process.chdir(__dirname);
-
 // Returns the executable directory depending on if we're running the
 // executable or source JS file
 function execDir() {
